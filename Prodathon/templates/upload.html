@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    
+    <head>
+        <meta charset="utf-8">
+        <!--Changing bg color using css-->
+        <style>
+            body {
+              background-color: white;
+            }
+        </style>
+        <title>Upload</title>
+    </head>
+    {% extends 'base.html' %}
+    {% block content %}
+    <body>
+        <h1>{% block title %}Recipe Exchange{% endblock %}</h1>
+        <form action="{{url_for('browse')}}" method="POST">
+            <section class="title">
+                <label for="title">Title of your Recipe</label>
+                <input type="text" name="Title" id="title" placeholder="Recipe Title" value="{{ request.form['title'] }}" required>
+            </section>
+            <hr>
+            <section class="time">
+                <label for="time">Total Time Required</label>
+                <input type="number" name="Hours" id="time" min="0" required>
+                <label for="time">hrs</label>
+                <input type="number" name="Minutes" id="time" min="0" max="59" required>
+                <label for="time">mins</label>
+            </section>
+            <hr>
+            <!--Using JS to create custom function for textarea-->
+            <script>
+                let previousLength = 0;
+
+                const handleInput = (event) => {
+                const bullet = "\u2022";
+                const newLength = event.target.value.length;
+                const characterCode = event.target.value.substr(-1).charCodeAt(0);
+
+                if (newLength > previousLength) {
+                    if (characterCode === 10) {
+                    event.target.value = `${event.target.value}${bullet} `;
+                    } else if (newLength === 1) {
+                    event.target.value = `${bullet} ${event.target.value}`;
+                    }
+                }
+    
+                previousLength = newLength;
+                }
+            </script>
+            <section class="ingredients">
+                <label for="ingredient">Enter your Ingredients</label>
+                <textarea name="Ingredients" id="ingredient" onInput="handleInput(event)" rows="10" cols="100" placeholder="Enter the Ingredients..." required></textarea>
+            </section>
+            <hr>
+            <section class="procedure">
+                <label for="procedure">Procedure</label>
+                <textarea name="Procedure" id="procedure" onInput="handleInput(event)" rows="10" cols="100" placeholder="Enter the Procedure..." required></textarea>
+            </section>
+            <hr>
+            <section class="tips">
+                <label for="tips">Tips</label>
+                <textarea name="Tips" id="tips" onInput="handleInput(event)" rows="10" cols="100" placeholder="Extra Tips..."></textarea>
+            </section>
+            <hr>
+            <button type="submit">Submit</button>
+        </form>
+    {% endblock %}    
+    </body>
+</html>
